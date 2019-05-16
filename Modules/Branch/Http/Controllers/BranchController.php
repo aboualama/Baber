@@ -12,13 +12,13 @@ class BranchController extends Controller
     /**
         * Display a listing of Branch.  
     */
-    public function index()
+    public function index(Request $request)
     { 
         $branch = Branch::where(function($query) use($request)
             { 
-                if($request->has('branch_id')) 
+                if($request->has('city_id')) 
                 {
-                    $query->where('branch_id' , $request->branch_id);
+                    $query->where('city_id' , $request->city_id);
                 } 
             })->paginate(10);
 
