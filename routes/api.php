@@ -12,28 +12,27 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+ 
  
 Route::group(['prefix' => 'v1.1' , 'namespace' => 'Api\Auth']  , function(){    	
   
 	Route::post('/register' , 'UserController@register');
 	Route::post('/login' , 'UserController@login'); 
 	 
-    // Route::post('reset-password', 'UserController@reset');
-    // Route::post('new-password', 'UserController@password');
+    Route::post('reset-password', 'UserController@reset');
+    Route::post('new-password', 'UserController@password');
+ 
+	Route::get('/login/{provider}', 'SocialloginController@redirectToProvider');
+	Route::get('/login/{provider}/callback', 'SocialloginController@handleProviderCallback');
+
+
+	Route::group(['middleware' => 'auth:api'] , function(){   
+
+    	Route::get('profile' , 'UserController@profile'); 
+		Route::put('profile/update' , 'UserController@update');  
+
+	});
 
  
-
-	// Route::group(['middleware' => 'auth:api'] , function(){   
-
-	// 	Route::get('profile' , 'UserController@profile'); 
-	// 	Route::put('profile/update' , 'UserController@update'); 
-
- 
-	// 	Route::get('test' , 'UserController@test'); 
-	// });
 
 }); 

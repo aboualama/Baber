@@ -17,7 +17,7 @@ class CreateBranchesTable extends Migration
             $table->bigIncrements('id');
 
             $table->timestamps();
-            $table->string('branch');
+            $table->string('name');
             $table->time('open_time');
             $table->time('close_time');
             $table->unsignedBigInteger('city_id');

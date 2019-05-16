@@ -12,7 +12,14 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+ 
+Route::group(['prefix' => 'v1.1']  , function(){    	
+  
+	Route::get('/branch' , 'BranchController@index'); 
+	Route::post('/branch' , 'BranchController@store');   
+	Route::get('/branch/{id}' , 'BranchController@show');
+	Route::put('/branch/{id}' , 'BranchController@update');
+	Route::delete('/branch/{id}' , 'BranchController@destroy');  
+ 
 
-// Route::middleware('auth:api')->get('/branch', function (Request $request) {
-//     return $request->user();
-// });
+}); 

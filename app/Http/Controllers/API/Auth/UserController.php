@@ -24,8 +24,8 @@ class UserController extends Controller
         * @bodyParam email string required The email of the user. 
         * @bodyParam phone int required The phone of the user. 
         * @bodyParam password string required The password of the user.   
-        * @bodyParam city_id int required The password of the user.   
-        * @bodyParam branch_id int required The password of the user.     
+        * @bodyParam city_id int required.   
+        * @bodyParam branch_id int required.     
     */
     public function register(Request $request)
     {
@@ -223,15 +223,4 @@ class UserController extends Controller
 
 
 
-
-
-
-
-
- 
-
-    public function test()
-    {
-         return responsejson(1 , 'OK' ,'test');
-    }
 } 
