@@ -61,20 +61,20 @@ class UserController extends Controller
     /**
         * Login user
         *     
-        * @bodyParam phone int required The phone of the user. 
+        * @bodyParam email int required The email of the user. 
         * @bodyParam password string required The password of the user.   
     */ 
     public function login (Request $request)
     {  
         $validator = validator()->make($request->all(), [ 
-            'phone'              => 'required|numeric', 
+            'email'              => 'required', 
             'password'           => 'required',
         ]); 
         if ($validator->fails()) 
         {
             return responsejson(0 , $validator->errors()->first() , $validator->errors()); 
         }   
-        $user = User::where('phone' , $request->phone)->first();  
+        $user = User::where('email' , $request->email)->first();  
         if($user)
         {
             if(Hash::check($request->password , $user->password)) 
@@ -86,7 +86,7 @@ class UserController extends Controller
                 return responsejson(0 , 'fails' , 'password is wrong'); 
             }
         } 
-        return responsejson(0 , 'fails' , 'phone is wrong');  
+        return responsejson(0 , 'fails' , 'email is wrong');  
     }
   
  
