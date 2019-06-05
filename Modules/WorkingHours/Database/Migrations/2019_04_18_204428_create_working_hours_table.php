@@ -11,15 +11,15 @@ class CreateWorkingHoursTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up() 
     {
         Schema::create('working_hours', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->timestamps(); 
             $table->time('start_time');
-            $table->integer('end_time');
-            $table->enum('days', array('1', '2', '3', '4', '5', '6', '7'));
+            $table->time('end_time');
+            $table->enum('days', array('Sun','Mon','Tue','Wed','Thu','Fri','Sat'));
             
             $table->unsignedBigInteger('worker_id');
             $table->foreign('worker_id')->references('id')->on('users')

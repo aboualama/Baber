@@ -37,8 +37,10 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'api_token',
         'pin_code',
+        'user_type',
+        'status',
         'city_id',
-        'branch_id',
+        'branch_id', 
     ];
 
     /**

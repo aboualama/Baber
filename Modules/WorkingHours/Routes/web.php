@@ -14,3 +14,5 @@
 // Route::prefix('workinghours')->group(function() {
 //     Route::get('/', 'WorkingHoursController@index');
 // });
+
+Route::get('/hhh' , 'WorkingHoursController@store'); 

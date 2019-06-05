@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API\Auth;
  
+use Mail;
+use JWTAuth;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject; 
-use Mail;
+use Illuminate\Support\Facades\Validator;
+use Modules\WorkingHours\Entities\WorkingHours;
 
 class UserController extends Controller
 {
@@ -31,14 +32,18 @@ class UserController extends Controller
     {
         $data = $request->all(); 
         $validator = validator()->make($data, [
-            'name'               => 'required|min:6',
-            'first_name'         => '',
-            'last_name'          => '',
-            'email'              => 'required|email|unique:users',  
-            'phone'              => 'required|unique:users', 
-            'password'           => 'required|confirmed|min:6|max:60|alpha_num',  
-            'city_id'            => 'numeric',  
-            'branch_id'          => 'numeric',  
+            'name'                 => 'required|min:6',
+            'first_name'           => '',
+            'last_name'            => '',
+            'email'                => 'required|email|unique:users',  
+            'phone'                => 'required|unique:users', 
+            'password'             => 'required|confirmed|min:6|max:60|alpha_num',  
+            'user_type'            => 'required|in:admin,worker,client', 
+            'city_id'              => 'numeric',  
+            'branch_id'            => 'numeric',  
+            'start_time'           => 'date_format:H:i',  
+            'end_time'             => 'date_format:H:i|after:start_time',  
+            'days'                 => 'in:Sun,Mon,Tue,Wed,Thu,Fri,Sat',  
         ]); 
         if ($validator->fails()) 
         {
@@ -49,6 +54,20 @@ class UserController extends Controller
         $user->api_token =  JWTAuth::fromUser($user);
  
         $user->save(); 
+        
+        $times = $request->times;
+        if ($user->user_type === 'worker')
+        {
+            foreach ($times as $time) 
+            {
+                $work_hour = new WorkingHours;
+                $work_hour->days       = $time['day'];
+                $work_hour->start_time = $time['start_time'];
+                $work_hour->end_time   = $time['end_time'];
+                $work_hour->worker_id  = $user->id;
+                $work_hour->save();
+            }
+        } 
 
         return responsejson(1 , 'OK' ,
                                       [

@@ -5,6 +5,9 @@ namespace Modules\WorkingHours\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 
 class WorkingHoursController extends Controller
 {
@@ -14,7 +17,7 @@ class WorkingHoursController extends Controller
      */
     public function index()
     {
-        return view('workinghours::index');
+        // return view('workinghours::index');
     }
 
     /**
@@ -33,7 +36,19 @@ class WorkingHoursController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $interval = DateInterval::createFromDateString('30 minutes');
+
+        $begin = new DateTime('2017-08-23 1:00:00');
+        $end = new DateTime('2017-08-23 5:00:00');
+        $end->add($interval);
+
+        $periods = iterator_to_array(new DatePeriod($begin, $interval, $end));
+        $start = array_shift($periods);
+        foreach ($periods as $time) {
+            echo  $start->format('H:iA'), ' - ', $time->format('H:iA')  . '<br>'; 
+            $start = $time;
+        }
     }
 
     /**
